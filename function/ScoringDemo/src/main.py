@@ -11,7 +11,7 @@ html = '''
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEMO SCORING</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css">
-   <style>
+    <style>
     body, html {
         height: 100%;
         margin: 0;
@@ -20,18 +20,16 @@ html = '''
         justify-content: center;
         flex-direction: column;
         background-color: #f4f4f8;
-        font-family: Arial, sans-serif; /* O la fuente que prefieras */
+        font-family: Arial, sans-serif;
     }
     .container {
         width: 100%;
         max-width: 330px;
         padding: 15px;
-        margin: auto;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         background: #fff;
-        padding: 20px;
         border-radius: 8px;
-        box-sizing: border-box; /* Asegura que padding y border estén incluidos en el ancho */
+        box-sizing: border-box;
     }
     h1 {
         color: #333;
@@ -41,14 +39,15 @@ html = '''
     form {
         display: flex;
         flex-direction: column;
-        gap: 10px; /* Espacio entre los elementos del formulario */
+        gap: 10px;
     }
-    input, textarea, button {
-        width: 100%; /* Ancho completo dentro del contenedor */
-        padding: 10px; /* Espaciado interno uniforme */
-        margin-bottom: 15px;
+    input, button {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin: 10px 0;
         border: 1px solid #ccc;
         border-radius: 4px;
+        box-sizing: border-box;
     }
     button {
         background-color: #007bff;
@@ -60,7 +59,7 @@ html = '''
     button:hover {
         background-color: #0056b3;
     }
-</style>
+    </style>
 </head>
 <body>
     <div class="container">
