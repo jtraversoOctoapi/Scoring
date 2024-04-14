@@ -11,51 +11,56 @@ html = '''
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEMO SCORING</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css">
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            background-color: #f4f4f8;
-        }
-        .container {
-            width: 100%;
-            max-width: 330px;
-            padding: 15px;
-            margin: auto;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        form {
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        input, textarea, button {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+   <style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #f4f4f8;
+        font-family: Arial, sans-serif; /* O la fuente que prefieras */
+    }
+    .container {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-sizing: border-box; /* Asegura que padding y border estén incluidos en el ancho */
+    }
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* Espacio entre los elementos del formulario */
+    }
+    input, textarea, button {
+        width: 100%; /* Ancho completo dentro del contenedor */
+        padding: 10px; /* Espaciado interno uniforme */
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
 </head>
 <body>
     <div class="container">
