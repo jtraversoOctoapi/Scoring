@@ -2,7 +2,7 @@ import os
 import requests
 from appwrite.query import Query
 from appwrite.client import Client
-from appwrite.services.database import Database
+from appwrite.services.databases import Databases
 from urllib.parse import parse_qs
 
 # Initialize the Appwrite client
@@ -12,7 +12,7 @@ client.set_endpoint('https://cloud.appwrite.io/v1') \
     .set_key('68a4559f483223bde0c57f0630be9b37191a1a809353da2538a1dcbc3da07039cdf6e9e09a62ae01baa5f026b241981f7cf95ea4be884a12cd95b23d22baae2cc25540fe12cb9655224b0d5c8b7d7022098e7afa558724718032854c413b0d25d08cd6c8615c61e611c6ad83b225f61e4a5bea40ef1b8b4573343bfea693d58a')
 
 # Initialize the database client
-database = Database(client)
+database = Databases(client)
 
 html = '''
 <!doctype html>
@@ -107,7 +107,7 @@ def main(context):
             'email': formData.get('email', [''])[0],
         }
 
-         # Crea un nuevo documento en la colección
+        # Crea un nuevo documento en la colección
         document = database.create_document(
             '661c1000c15d1c28d50a',  # Reemplaza con el ID de tu colección
             {'rut': rut, 'email': email},
