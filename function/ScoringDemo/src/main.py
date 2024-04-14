@@ -34,10 +34,20 @@ html = '''
             document.getElementById('modal').style.display = 'none';
         }
 
+        function formDataToUrlEncoded(formElement) {
+            const formData = new FormData(formElement);
+            const pairs = [];
+            for (const [key, value] of formData) {
+                pairs.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+            }
+            return pairs.join('&');
+        }
+
         document.querySelector('form').addEventListener('submit', function (e) {
             e.preventDefault();
             var formData = new FormData(this);
-            console.log('URL de acción:', this.action); 
+            console.log('URL de acción:', this.action);
+            const urlEncodedData = formDataToUrlEncoded(this);
             for (var pair of formData.entries()) {
                 console.log(pair[0]+ ': ' + pair[1]);  // Muestra cada campo del formulario y su valor
             }
@@ -46,7 +56,10 @@ html = '''
             
             fetch(this.action, {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: urlEncodedData
             })
             .then(response => {
                 console.log('Respuesta recibida', response);
@@ -264,4 +277,10 @@ def main(context):
             
         return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
     
-    return context.res.send('Not found', 404, {'Content-Type': 'text/plain'})
+     error_message = {
+        "error": True,
+        "message": "Método o tipo de contenido no permitido.",
+        "method_received": context.req.method,
+        "content_type_received": content_type
+    }
+    return context.res.json(error_message, 400)
