@@ -276,11 +276,11 @@ def main(context):
             response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
             
         return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
-    
-     error_message = {
-        "error": True,
-        "message": "Método o tipo de contenido no permitido.",
-        "method_received": context.req.method,
-        "content_type_received": content_type
-    }
-    return context.res.json(error_message, 400)
+        
+        error_message = {
+            "error": True,
+            "message": "Método o tipo de contenido no permitido.",
+            "method_received": context.req.method,
+            "content_type_received": content_type
+        }
+        return context.res.json(error_message, 400)
