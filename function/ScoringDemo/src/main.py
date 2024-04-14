@@ -101,11 +101,8 @@ def main(context):
     
     if context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
         formData = parse_qs(context.req.body)
-
-        message = {
-            'rut': formData.get('rut', [''])[0],
-            'email': formData.get('email', [''])[0],
-        }
+        rut: formData.get('rut', [''])[0]
+        email: formData.get('email', [''])[0]
 
         # Crea un nuevo documento en la colección
         document = database.create_document(
