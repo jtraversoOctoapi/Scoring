@@ -37,8 +37,12 @@ html = '''
         document.querySelector('form').addEventListener('submit', function (e) {
             e.preventDefault();
             var formData = new FormData(this);
+            console.log('URL de acción:', this.action); 
+            for (var pair of formData.entries()) {
+                console.log(pair[0]+ ': ' + pair[1]);  // Muestra cada campo del formulario y su valor
+            }
             document.getElementById('loader').style.display = 'block'; // Mostrar el loader
-            console.log('Enviando formulario...'); // Añadir console.log para depuración
+            console.log('Esperando el resultado de su evaluación...'); // Añadir console.log para depuración
             
             fetch(this.action, {
                 method: 'POST',
@@ -46,9 +50,11 @@ html = '''
             })
             .then(response => {
                 console.log('Respuesta recibida', response);
+                console.log('Estado de la respuesta:', response.status);
                 if (response.ok) {
                     return response.json();
                 } else {
+                    response.text().then(text => console.error('Error en la respuesta:', text)); // Muestra el cuerpo de la respuesta como texto si no es un JSON válido
                     throw new Error('Respuesta del servidor no contiene el formato correcto');
                 }
             })
