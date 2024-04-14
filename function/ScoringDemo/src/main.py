@@ -23,6 +23,46 @@ html = '''
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEMO SCORING</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css">
+    <script>
+    function openModal(response) {
+        document.getElementById('responseText').value = response;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        document.getElementById('loader').style.display = 'block'; // Mostrar el loader
+
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            checkForResponse(data.document_id); // Comienza a verificar la respuesta
+        });
+    });
+
+    function checkForResponse(documentId) {
+        const interval = setInterval(() => {
+            fetch(`/path-to-check-response/${documentId}`) // Debes configurar este endpoint en tu backend
+                .then(response => response.json())
+                .then(data => {
+                    if (data.response) {
+                        clearInterval(interval);
+                        document.getElementById('loader').style.display = 'none'; // Ocultar el loader
+                        openModal(data.response); // Mostrar la respuesta en el modal
+                    }
+                });
+        }, 2000); // Consulta cada 2 segundos
+    }
+
+</script>
     <style>
     body, html {
         height: 100%;
@@ -71,9 +111,54 @@ html = '''
     button:hover {
         background-color: #0056b3;
     }
+     .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+        }
+        textarea {
+            width: 100%;
+            height: 300px; /* Ajuste según necesites */
+            overflow-y: scroll;
+        }
+        #loader {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: white;
+            background-color: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h1>Respuesta de la Evaluación</h1>
+            <textarea readonly id="responseText"></textarea>
+            <button onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+    <div id="loader" style="display: none;">
+        Cargando...
+    </div>
     <div class="container">
         <h1>DEMO SCORING</h1>
         <form method="POST">
