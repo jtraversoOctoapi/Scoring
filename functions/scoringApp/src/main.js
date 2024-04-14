@@ -9,8 +9,6 @@ export default async ({ res, req, log, error }) => {
   ]);
 
   const appwrite = new AppwriteService();
-
-module.exports = async function (req, res) {
     const fetch = require('node-fetch');
     const { method, payload } = req;
 
@@ -59,6 +57,4 @@ module.exports = async function (req, res) {
     } else {
         res.status(405).send('Método no permitido');
     }
-};
-
 };
