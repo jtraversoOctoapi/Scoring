@@ -65,7 +65,7 @@ def main(context):
                 return context.res.json({"error": "Error en el proceso del webhook.", "status_code": response.status_code}, status=response.status_code)
         except Exception as e:
             response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
-            return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
+            return context.res.send(response_message, 401, {'Content-Type': 'text/plain'})
     else:
         error_message = {
             "error": True,
