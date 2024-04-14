@@ -20,6 +20,8 @@ def main(context):
                 result = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
                 return context.res.json(result)
             else:
-                return context.res.json({'message': 'Invalid path'}, status_code=404)
+                context.res.set_status(404)
+                return context.res.json({'message': 'Invalid path'})
         except Exception as e:
-            return context.res.json({'error': str(e)}, status_code=500)
+            context.res.set_status(500)
+            return context.res.json({'error': str(e)})
