@@ -1,7 +1,18 @@
 import os
 import requests
 from appwrite.query import Query
+from appwrite.client import Client
+from appwrite.services.database import Database
 from urllib.parse import parse_qs
+
+# Initialize the Appwrite client
+client = Client()
+client.set_endpoint('https://cloud.appwrite.io/v1') \
+    .set_project('661bf232a2d367eccb49') \
+    .set_key('68a4559f483223bde0c57f0630be9b37191a1a809353da2538a1dcbc3da07039cdf6e9e09a62ae01baa5f026b241981f7cf95ea4be884a12cd95b23d22baae2cc25540fe12cb9655224b0d5c8b7d7022098e7afa558724718032854c413b0d25d08cd6c8615c61e611c6ad83b225f61e4a5bea40ef1b8b4573343bfea693d58a')
+
+# Initialize the database client
+database = Database(client)
 
 html = '''
 <!doctype html>
@@ -95,11 +106,30 @@ def main(context):
             'rut': formData.get('rut', [''])[0],
             'email': formData.get('email', [''])[0],
         }
+
+         # Crea un nuevo documento en la colección
+        document = database.create_document(
+            '661c1000c15d1c28d50a',  # Reemplaza con el ID de tu colección
+            {'rut': rut, 'email': email},
+            read=['*'],  # Ajusta según las reglas de acceso que necesites
+            write=['*']
+        )
+
+        # Extrae el ID del nuevo documento
+        document_id = document['$id']
+
+        # Datos para enviar al webhook, incluyendo el ID del documento
+        data_to_send = {
+            'rut': rut,
+            'email': email,
+            'document_id': document_id
+        }
+
         # URL del webhook
         webhook_url = 'https://hook.us1.make.com/5i1vm5745y7guaewm9np9uyaneitygk8'
         try:
           # Enviar los datos al webhook y capturar la respuesta
-          response = requests.post(webhook_url, json=message)
+          response = requests.post(webhook_url, json=data_to_send)
           if response.status_code == 200:
             response_message = "Datos enviados correctamente al webhook."
           else:
