@@ -11,7 +11,7 @@ client.set_endpoint('https://cloud.appwrite.io/v1') \
 database = Databases(client)
 
 def main(context):
-    if context.req.method == 'GET':        
+    if context.req.method == 'GET':
         try:
             # Extract the document ID from the path
             path_parts = context.req.path.split('/')
