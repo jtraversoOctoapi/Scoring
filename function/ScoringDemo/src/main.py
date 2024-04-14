@@ -9,23 +9,72 @@ html = '''
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Scoring</title>
+    <title>DEMO SCORING</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #f4f4f8;
+        }
+        .container {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <form method="POST">
-        <div>
-            <label for="rut">RUT del Cliente:</label>
-            <input type="text" id="rut" name="rut" required>
-        </div>
-        <div>
-            <label for="email">Email del Cliente:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <button type="submit">Enviar</button>
-    </form>
+    <div class="container">
+        <h1>DEMO SCORING</h1>
+        <form method="POST">
+            <div>
+                <label for="rut">RUT del Cliente:</label>
+                <input type="text" id="rut" name="rut" required>
+            </div>
+            <div>
+                <label for="email">Email del Cliente:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
 </body>
 </html>
+
 '''
 
 def main(context):
@@ -36,7 +85,7 @@ def main(context):
     content_type = context.req.headers.get('content-type', '').lower()
     
     if context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
-        formData = parse_qs(context.req.body.decode('utf-8'))
+        formData = parse_qs(context.req.body)
 
         message = {
             'rut': formData.get('rut', [''])[0],
