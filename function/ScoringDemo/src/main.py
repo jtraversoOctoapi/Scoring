@@ -36,7 +36,7 @@ def main(context):
     content_type = context.req.headers.get('content-type', '').lower()
     
     if context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
-        formData = parse_qs(context.req.body)
+        formData = parse_qs(context.req.body.decode('utf-8'))
 
         message = {
             'rut': formData.get('rut', [''])[0],
@@ -48,8 +48,7 @@ def main(context):
           # Enviar los datos al webhook y capturar la respuesta
           response = requests.post(webhook_url, json=message)
           if response.status_code == 200:
-            result = response.json()
-            response_message = f"Resultado del proceso: {result.get('someField', 'No additional info')}"
+            response_message = "Datos enviados correctamente al webhook."
           else:
             response_message = "Error en el proceso del webhook."
         except Exception as e:
