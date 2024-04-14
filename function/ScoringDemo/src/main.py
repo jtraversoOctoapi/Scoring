@@ -39,7 +39,7 @@ def main(context):
         formData = parse_qs(context.req.body)
 
         message = {
-            'rut': formData.get('name', [''])[0],
+            'rut': formData.get('rut', [''])[0],
             'email': formData.get('email', [''])[0],
         }
         # URL del webhook
