@@ -3,6 +3,7 @@ import requests
 from appwrite.query import Query
 from appwrite.client import Client
 from appwrite.services.databases import Databases
+from appwrite.id import ID
 from urllib.parse import parse_qs
 
 # Initialize the Appwrite client
@@ -104,22 +105,26 @@ def main(context):
         rut= formData.get('rut', [''])[0]
         email= formData.get('email', [''])[0]
 
+        
+
         # Crea un nuevo documento en la colección
         document = database.create_document(
-            '661c1000c15d1c28d50a',  # Reemplaza con el ID de tu colección
-            {'rut': rut, 'email': email},
-            read=['*'],  # Ajusta según las reglas de acceso que necesites
-            write=['*']
+            database_id = '661c0ff748205b5d00b5',
+            collection_id = '661c1000c15d1c28d50a',  # Reemplaza con el ID de tu colección
+            document_id=ID.unique(), 
+            data = {'rut': rut, 'email': email},
         )
 
         # Extrae el ID del nuevo documento
         document_id = document['$id']
+        created_at = document['$createdAt'] 
 
         # Datos para enviar al webhook, incluyendo el ID del documento
         data_to_send = {
             'rut': rut,
             'email': email,
-            'document_id': document_id
+            'document_id': document_id,
+            'created_at': created_at
         }
 
         # URL del webhook
