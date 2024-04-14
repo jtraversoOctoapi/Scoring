@@ -24,97 +24,123 @@ html = '''
     <title>DEMO SCORING</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css">
     <script>
-    function openModal(response) {
-        document.getElementById('responseText').value = response;
-        document.getElementById('modal').style.display = 'flex';
-    }
 
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
+        document.addEventListener('DOMContentLoaded', function () {
+            function openModal(response) {
+                document.getElementById('responseText').value = response;
+                document.getElementById('modal').style.display = 'flex';
+            }
 
-    document.querySelector('form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        document.getElementById('loader').style.display = 'block'; // Mostrar el loader
+            function closeModal() {
+                document.getElementById('modal').style.display = 'none';
+            }
 
-        fetch(this.action, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            checkForResponse(data.document_id); // Comienza a verificar la respuesta
-        });
-    });
+            document.querySelector('form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                document.getElementById('loader').style.display = 'block'; // Mostrar el loader
+                console.log('Enviando formulario...'); // Añadir console.log para depuración
 
-    function checkForResponse(documentId) {
-        const interval = setInterval(() => {
-            fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.respuesta !== null) {
-                        clearInterval(interval); // Detiene las comprobaciones
-                        document.getElementById('loader').style.display = 'none'; // Ocultar el loader
-                        openModal(data.respuesta); // Abre el modal con la respuesta
-                    }
+                fetch('https://661c067e476507040f30.appwrite.global/', { // Asegúrate de usar tu endpoint correcto aquí
+                    method: 'POST',
+                    body: formData
                 })
-                .catch(error => {
-                    console.error('Error al consultar el documento:', error);
-             });
-        }, 2000); // Consulta cada 2 segundos
-    }
+                    .then(response => {
+                        console.log('Respuesta recibida', response);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Datos recibidos', data); // Añadir console.log para ver los datos recibidos
+                        if (data && data.document_id) {
+                            checkForResponse(data.document_id); // Comienza a verificar la respuesta
+                        } else {
+                            console.error('document_id no está presente en la respuesta');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al enviar formulario:', error);
+                    });
+            });
+        });
 
-</script>
+        function checkForResponse(documentId) {
+                console.log('Verificando respuesta para el documento', documentId); // Añadir console.log para depuración
+                const interval = setInterval(() => {
+                    fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Verificación de datos', data); // Añadir console.log para ver los datos de la verificación
+                            if (data.respuesta !== null) {
+                                clearInterval(interval); // Detiene las comprobaciones
+                                document.getElementById('loader').style.display = 'none'; // Ocultar el loader
+                                openModal(data.respuesta); // Abre el modal con la respuesta
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al consultar el documento:', error);
+                        });
+                }, 2000); // Consulta cada 2 segundos
+            }
+
+    </script>
     <style>
-    body, html {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background-color: #f4f4f8;
-        font-family: Arial, sans-serif;
-    }
-    .container {
-        width: 100%;
-        max-width: 330px;
-        padding: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        background: #fff;
-        border-radius: 8px;
-        box-sizing: border-box;
-    }
-    h1 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    input, button {
-        width: calc(100% - 20px);
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    button:hover {
-        background-color: #0056b3;
-    }
-     .modal {
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #f4f4f8;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input,
+        button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -125,6 +151,7 @@ html = '''
             align-items: center;
             justify-content: center;
         }
+
         .modal-content {
             background-color: white;
             padding: 20px;
@@ -132,11 +159,14 @@ html = '''
             width: 80%;
             max-width: 600px;
         }
+
         textarea {
             width: 100%;
-            height: 300px; /* Ajuste según necesites */
+            height: 300px;
+            /* Ajuste según necesites */
             overflow-y: scroll;
         }
+
         #loader {
             position: fixed;
             left: 50%;
@@ -144,7 +174,7 @@ html = '''
             transform: translate(-50%, -50%);
             font-size: 20px;
             color: white;
-            background-color: rgba(0,0,0,0.8);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
             z-index: 1000;
@@ -178,7 +208,6 @@ html = '''
     </div>
 </body>
 </html>
-
 '''
 
 def main(context):
