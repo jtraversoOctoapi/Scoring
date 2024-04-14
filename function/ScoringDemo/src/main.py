@@ -50,15 +50,18 @@ html = '''
 
     function checkForResponse(documentId) {
         const interval = setInterval(() => {
-            fetch(`/path-to-check-response/${documentId}`) // Debes configurar este endpoint en tu backend
+            fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.response) {
-                        clearInterval(interval);
+                    if (data.respuesta !== null) {
+                        clearInterval(interval); // Detiene las comprobaciones
                         document.getElementById('loader').style.display = 'none'; // Ocultar el loader
-                        openModal(data.response); // Mostrar la respuesta en el modal
+                        openModal(data.respuesta); // Abre el modal con la respuesta
                     }
-                });
+                })
+                .catch(error => {
+                    console.error('Error al consultar el documento:', error);
+             });
         }, 2000); // Consulta cada 2 segundos
     }
 
