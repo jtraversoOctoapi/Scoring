@@ -1,37 +1,40 @@
-from appwrite.client import Client
+from appwrite.query import Query
+from urllib.parse import parse_qs
 import os
 
+html = '''<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Contact Form</title>
+  </head>
+  <body>
+    <form action="/" method="POST">
+      <input type="text" id="name" name="name" placeholder="Name" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <textarea id="content" name="content" placeholder="Message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
+'''
 
-# This is your Appwrite function
-# It's executed each time we get a request
 def main(context):
-    # Why not try the Appwrite SDK?
-    #
-    # client = (
-    #     Client()
-    #     .set_endpoint("https://cloud.appwrite.io/v1")
-    #     .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-    #     .set_key(os.environ["APPWRITE_API_KEY"])
-    # )
+    if context.req.method == 'GET':
+        return context.res.send(html, 200, {'content-type': 'text/html'})
 
-    # You can log messages to the console
-    context.log("Hello, Logs!")
+    # Utiliza .get() para acceder al encabezado 'content-type' y normaliza el nombre del encabezado a minúsculas
+    content_type = context.req.headers.get('content-type', '').lower()
+    
+    if context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
+        formData = parse_qs(context.req.body)
 
-    # If something goes wrong, log an error
-    context.error("Hello, Errors!")
-
-    # The `ctx.req` object contains the request data
-    if context.req.method == "GET":
-        # Send a response with the res object helpers
-        # `ctx.res.send()` dispatches a string back to the client
-        return context.res.send("Hello, World!")
-
-    # `ctx.res.json()` is a handy helper for sending JSON
-    return context.res.json(
-        {
-            "motto": "Build like a team of hundreds_",
-            "learn": "https://appwrite.io/docs",
-            "connect": "https://appwrite.io/discord",
-            "getInspired": "https://builtwith.appwrite.io",
+        message = {
+            'name': formData.get('name', [''])[0],
+            'email': formData.get('email', [''])[0],
+            'content': formData.get('content', [''])[0]
         }
-    )
+
+        return context.res.send(str(message))  # Asegúrate de convertir el diccionario a string para enviarlo
+
+    return context.res.send('Not found', 404)
