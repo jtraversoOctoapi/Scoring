@@ -40,11 +40,23 @@ html = '''
                 var formData = new FormData(this);
                 document.getElementById('loader').style.display = 'block'; // Mostrar el loader
                 console.log('Enviando formulario...'); // Añadir console.log para depuración
-
-                fetch('https://661c067e476507040f30.appwrite.global/', { // Asegúrate de usar tu endpoint correcto aquí
+                
+                fetch(this.action, {
                     method: 'POST',
                     body: formData
                 })
+                .then(response => {
+                    console.log('Respuesta recibida', response);
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                         throw new Error('Respuesta del servidor no contiene el formato correcto');
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    checkForResponse(data.document_id); // Comienza a verificar la respuesta
+                    });
                     .then(response => {
                         console.log('Respuesta recibida', response);
                         return response.json();
