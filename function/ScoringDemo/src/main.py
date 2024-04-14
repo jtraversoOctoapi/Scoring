@@ -199,6 +199,18 @@ html = '''
             padding: 20px;
             border-radius: 10px;
             z-index: 1000;
+            /* Añade un borde y animación */
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        /* Animación de giro */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -211,7 +223,7 @@ html = '''
         </div>
     </div>
     <div id="loader" style="display: none;">
-        Cargando...
+        Esperando el resultado de la evaluación...
     </div>
     <div class="container">
         <h1>DEMO SCORING</h1>
