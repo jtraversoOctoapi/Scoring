@@ -23,78 +23,68 @@ html = '''
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEMO SCORING</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css">
-    <script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function openModal(response) {
+            document.getElementById('responseText').value = response;
+            document.getElementById('modal').style.display = 'flex';
+        }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            function openModal(response) {
-                document.getElementById('responseText').value = response;
-                document.getElementById('modal').style.display = 'flex';
-            }
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
 
-            function closeModal() {
-                document.getElementById('modal').style.display = 'none';
-            }
-
-            document.querySelector('form').addEventListener('submit', function (e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-                document.getElementById('loader').style.display = 'block'; // Mostrar el loader
-                console.log('Enviando formulario...'); // Añadir console.log para depuración
-                
-                fetch(this.action, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    console.log('Respuesta recibida', response);
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                         throw new Error('Respuesta del servidor no contiene el formato correcto');
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            document.getElementById('loader').style.display = 'block'; // Mostrar el loader
+            console.log('Enviando formulario...'); // Añadir console.log para depuración
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('Respuesta recibida', response);
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Respuesta del servidor no contiene el formato correcto');
+                }
+            })
+            .then(data => {
+                console.log('Datos recibidos', data); // Añadir console.log para ver los datos recibidos
+                if (data && data.document_id) {
                     checkForResponse(data.document_id); // Comienza a verificar la respuesta
-                    });
-                    .then(response => {
-                        console.log('Respuesta recibida', response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Datos recibidos', data); // Añadir console.log para ver los datos recibidos
-                        if (data && data.document_id) {
-                            checkForResponse(data.document_id); // Comienza a verificar la respuesta
-                        } else {
-                            console.error('document_id no está presente en la respuesta');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error al enviar formulario:', error);
-                    });
+                } else {
+                    console.error('document_id no está presente en la respuesta');
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar formulario:', error);
             });
         });
+    });
 
-        function checkForResponse(documentId) {
-                console.log('Verificando respuesta para el documento', documentId); // Añadir console.log para depuración
-                const interval = setInterval(() => {
-                    fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Verificación de datos', data); // Añadir console.log para ver los datos de la verificación
-                            if (data.respuesta !== null) {
-                                clearInterval(interval); // Detiene las comprobaciones
-                                document.getElementById('loader').style.display = 'none'; // Ocultar el loader
-                                openModal(data.respuesta); // Abre el modal con la respuesta
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error al consultar el documento:', error);
-                        });
-                }, 2000); // Consulta cada 2 segundos
-            }
-
-    </script>
+    function checkForResponse(documentId) {
+        console.log('Verificando respuesta para el documento', documentId); // Añadir console.log para depuración
+        const interval = setInterval(() => {
+            fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Verificación de datos', data); // Añadir console.log para ver los datos de la verificación
+                if (data.respuesta !== null) {
+                    clearInterval(interval); // Detiene las comprobaciones
+                    document.getElementById('loader').style.display = 'none'; // Ocultar el loader
+                    openModal(data.respuesta); // Abre el modal con la respuesta
+                }
+            })
+            .catch(error => {
+                console.error('Error al consultar el documento:', error);
+            });
+        }, 2000); // Consulta cada 2 segundos
+    }
+</script>
     <style>
         body,
         html {
@@ -225,7 +215,7 @@ html = '''
 def main(context):
     if context.req.method == 'GET':
         return context.res.send(html, 200, {'content-type': 'text/html'})
-
+        
     # Utiliza .get() para acceder al encabezado 'content-type' y normaliza el nombre del encabezado a minúsculas
     content_type = context.req.headers.get('content-type', '').lower()
     
@@ -233,21 +223,19 @@ def main(context):
         formData = parse_qs(context.req.body)
         rut= formData.get('rut', [''])[0]
         email= formData.get('email', [''])[0]
-
         
-
         # Crea un nuevo documento en la colección
         document = database.create_document(
             database_id = '661c0ff748205b5d00b5',
-            collection_id = '661c1000c15d1c28d50a',  # Reemplaza con el ID de tu colección
+            collection_id = '661c1000c15d1c28d50a',
             document_id=ID.unique(), 
             data = {'rut': rut, 'email': email},
         )
-
+        
         # Extrae el ID del nuevo documento
         document_id = document['$id']
-        created_at = document['$createdAt'] 
-
+        created_at = document['$createdAt']
+        
         # Datos para enviar al webhook, incluyendo el ID del documento
         data_to_send = {
             'rut': rut,
@@ -255,20 +243,19 @@ def main(context):
             'document_id': document_id,
             'created_at': created_at
         }
-
+        
         # URL del webhook
         webhook_url = 'https://hook.us1.make.com/5i1vm5745y7guaewm9np9uyaneitygk8'
         try:
-          # Enviar los datos al webhook y capturar la respuesta
-          response = requests.post(webhook_url, json=data_to_send)
-          if response.status_code == 200:
-            response_message = "Datos enviados correctamente al webhook."
-          else:
-            response_message = "Error en el proceso del webhook."
+            # Enviar los datos al webhook y capturar la respuesta
+            response = requests.post(webhook_url, json=data_to_send)
+            if response.status_code == 200:
+                response_message = "Datos enviados correctamente al webhook."
+            else:
+                response_message = "Error en el proceso del webhook."
         except Exception as e:
-          response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
-        
+            response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
+            
         return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
-        #return context.res.send(str(message))  # Asegúrate de convertir el diccionario a string para enviarlo
-
+    
     return context.res.send('Not found', 404, {'Content-Type': 'text/plain'})
