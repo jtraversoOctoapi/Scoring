@@ -233,7 +233,7 @@ html = '''
                 <input type="text" id="rut" name="rut" required>
             </div>
             <div>
-                <label for="email">Email del Cliente:</label>
+                <label for="email">Email de Notificación Resultado:</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <button type="submit">Enviar</button>
