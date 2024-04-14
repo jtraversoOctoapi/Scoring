@@ -234,21 +234,21 @@ html = '''
 def main(context):
     if context.req.method == 'GET':
         return context.res.send(html, 200, {'content-type': 'text/html'})
-        
+    
     # Utiliza .get() para acceder al encabezado 'content-type' y normaliza el nombre del encabezado a minúsculas
     content_type = context.req.headers.get('content-type', '').lower()
     
     if context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
         formData = parse_qs(context.req.body)
-        rut= formData.get('rut', [''])[0]
-        email= formData.get('email', [''])[0]
+        rut = formData.get('rut', [''])[0]
+        email = formData.get('email', [''])[0]
         
         # Crea un nuevo documento en la colección
         document = database.create_document(
-            database_id = '661c0ff748205b5d00b5',
-            collection_id = '661c1000c15d1c28d50a',
+            database_id='661c0ff748205b5d00b5',
+            collection_id='661c1000c15d1c28d50a',
             document_id=ID.unique(), 
-            data = {'rut': rut, 'email': email},
+            data={'rut': rut, 'email': email},
         )
         
         # Extrae el ID del nuevo documento
@@ -272,11 +272,11 @@ def main(context):
                 response_message = "Datos enviados correctamente al webhook."
             else:
                 response_message = "Error en el proceso del webhook."
+            return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
         except Exception as e:
             response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
-            
-        return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
-        
+            return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
+    else:
         error_message = {
             "error": True,
             "message": "Método o tipo de contenido no permitido.",
