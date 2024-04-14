@@ -1,21 +1,30 @@
+import os
+import requests
 from appwrite.query import Query
 from urllib.parse import parse_qs
-import os
 
-html = '''<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Contact Form</title>
-  </head>
-  <body>
-    <form action="/" method="POST">
-      <input type="text" id="name" name="name" placeholder="Name" required>
-      <input type="email" id="email" name="email" placeholder="Email" required>
-      <textarea id="content" name="content" placeholder="Message" required></textarea>
-      <button type="submit">Submit</button>
+html = '''
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Scoring</title>
+    <link rel="stylesheet" href="https://unpkg.com/pico.css">
+</head>
+<body>
+    <form method="POST">
+        <div>
+            <label for="rut">RUT del Cliente:</label>
+            <input type="text" id="rut" name="rut" required>
+        </div>
+        <div>
+            <label for="email">Email del Cliente:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <button type="submit">Enviar</button>
     </form>
-  </body>
+</body>
 </html>
 '''
 
@@ -30,11 +39,23 @@ def main(context):
         formData = parse_qs(context.req.body)
 
         message = {
-            'name': formData.get('name', [''])[0],
+            'rut': formData.get('name', [''])[0],
             'email': formData.get('email', [''])[0],
-            'content': formData.get('content', [''])[0]
         }
+        # URL del webhook
+        webhook_url = 'https://hook.us1.make.com/5i1vm5745y7guaewm9np9uyaneitygk8'
+        try:
+          # Enviar los datos al webhook y capturar la respuesta
+          response = requests.post(webhook_url, json=message)
+          if response.status_code == 200:
+            result = response.json()
+            response_message = f"Resultado del proceso: {result.get('someField', 'No additional info')}"
+          else:
+            response_message = "Error en el proceso del webhook."
+        except Exception as e:
+          response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
+        
+        return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
+        #return context.res.send(str(message))  # Asegúrate de convertir el diccionario a string para enviarlo
 
-        return context.res.send(str(message))  # Asegúrate de convertir el diccionario a string para enviarlo
-
-    return context.res.send('Not found', 404)
+    return context.res.send('Not found', 404, {'Content-Type': 'text/plain'})
