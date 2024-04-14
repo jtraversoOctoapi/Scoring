@@ -264,18 +264,20 @@ def main(context):
         }
         
         # URL del webhook
-        webhook_url = 'https://hook.us1.make.com/5i1vm5745y7guaewm9np9uyaneitygk8'
+        webhook_url = 'https://hook.us1.make.com/iq7pr5ib62ct8pin9qxwsxf5jh2v3w3m'
         try:
             # Enviar los datos al webhook y capturar la respuesta
             response = requests.post(webhook_url, json=data_to_send)
             if response.status_code == 200:
                 response_message = "Datos enviados correctamente al webhook."
+                return context.res.json(response_message, status=200)
             else:
-                response_message = "Error en el proceso del webhook."
-            return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
+                response_message = {"message": "Error en el proceso del webhook.", "error": response.text}
+                # Devolver el mismo código de estado que el webhook o un código específico según el error
+                return context.res.json(response_message, status=response.status_code)
         except Exception as e:
             response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
-            return context.res.send(response_message, 200, {'Content-Type': 'text/plain'})
+            return context.res.json(response_message, status=500)
     else:
         error_message = {
             "error": True,
