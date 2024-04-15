@@ -18,7 +18,20 @@ database = Databases(client)
 
 def main(context):
     if context.req.method == 'GET':
-        return context.res.send(html_template, 200, {'content-type': 'text/html'})
+        path_parts = context.req.path.split('/')
+        if len(path_parts) == 1:
+            # Servir la página HTML principal si no hay más partes en la ruta
+            return context.res.send(html_template, 200, {'Content-Type': 'text/html'})
+        elif len(path_parts) == 3 and path_parts[1] == 'documents':
+            # Buscar y devolver un documento si la ruta es del tipo /documents/{documentId}
+            document_id = path_parts[2]
+            try:
+                result = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
+                return context.res.json(result, 200)
+            except Exception as e:
+                return context.res.json({'error': str(e)}, 500)
+        else:
+            return context.res.json({'message': 'Invalid path'}, 400)
     
     # Utiliza .get() para acceder al encabezado 'content-type' y normaliza el nombre del encabezado a minúsculas
     content_type = context.req.headers.get('content-type', '').lower()
