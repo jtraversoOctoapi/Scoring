@@ -48,10 +48,15 @@ html_template = '''
                 console.log('Respuesta recibida', response);
                 console.log('Estado de la respuesta:', response.status);
                 if (response.ok) {
-                    return response.json();
+                    response.text().then(text => {
+                        console.log('Respuesta como texto:', text);
+                        checkForResponse(text); // Asumimos que checkForResponse puede manejar una respuesta en texto si es necesario
+                    });
                 } else {
-                    response.text().then(text => console.error('Error en la respuesta:', text)); // Muestra el cuerpo de la respuesta como texto si no es un JSON válido
-                    throw new Error('Respuesta del servidor no contiene el formato correcto');
+                    response.text().then(text => {
+                        console.error('Error en la respuesta:', text);
+                        throw new Error('Respuesta del servidor no contiene el formato correcto');
+                    });
                 }
             })
             .then(data => {
