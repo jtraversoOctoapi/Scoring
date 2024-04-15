@@ -66,13 +66,10 @@ html_template = '''
             });
 
 function checkForResponse(documentId) {
-    console.log('Verificando respuesta para el documento', documentId, ' url:','https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId)');
+    console.log('Verificando respuesta para el documento', documentId, ' url:','https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId)';
     const interval = setInterval(() => {
         fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`, {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin': '661c067e476507040f30.appwrite.global'
-            }
+            method: 'GET', // Puede que no necesites el header de 'Content-Type' para una solicitud GET
         })
         .then(response => {
             console.log("response: ", response)
