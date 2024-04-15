@@ -101,6 +101,9 @@ html_template = '''
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* Add this line */
+            justify-content: center;
+            /* Add this line */
             width: 100%;
             max-width: 330px;
             padding: 15px;
@@ -180,21 +183,22 @@ html_template = '''
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            font-size: 20px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
             z-index: 1000;
         }
 
-        .loader-circle {
+        .spinner {
             border: 6px solid #f3f3f3;
             border-top: 6px solid #3498db;
             border-radius: 50%;
             width: 50px;
             height: 50px;
             animation: spin 2s linear infinite;
+        }
+
+        .loading-text {
+            color: white;
+            margin-top: 10px;
+            /* Adjust as needed */
         }
 
         /* Animación de giro */
@@ -207,9 +211,6 @@ html_template = '''
                 transform: rotate(360deg);
             }
         }
-
-        /* Asegúrese de que el texto "Cargando..." esté centrado en el contenedor */
-        .loader-text {
     </style>
 </head>
 
@@ -222,8 +223,8 @@ html_template = '''
         </div>
     </div>
     <div id="loader" style="display: none;">
-        <div class="loader-circle"></div>
-        <div class="loader-text">Esperando el resultado de tu evaluación...</div>
+        <div class="spinner"></div>
+        <p class="loading-text">Esperando el resultado de tu evaluación...</p>
     </div>
     <div class="container">
         <h1>DEMO SCORING</h1>
