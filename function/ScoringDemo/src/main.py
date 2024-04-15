@@ -5,7 +5,7 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.id import ID
 from urllib.parse import parse_qs
-from templates import html_template
+from .templates import html_template
 
 # Initialize the Appwrite client
 client = Client()
