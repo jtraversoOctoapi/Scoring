@@ -107,7 +107,7 @@ html_template = '''
             flex-direction: column;
             align-items: center;
             /* Add this line */
-            justify-content: space-around;
+            justify-content: center;
             /* Add this line */
             width: 100%;
             max-width: 330px;
@@ -152,10 +152,6 @@ html_template = '''
             background-color: #0056b3;
         }
 
-        .button, .textarea {
-            width: 100%; /* Ajustar según necesidad */
-        }
-
         .modal {
             position: fixed;
             top: 0;
@@ -166,7 +162,6 @@ html_template = '''
             display: none;
             align-items: center;
             justify-content: center;
-            z-index:1000;
         }
 
         .modal-content {
@@ -206,7 +201,7 @@ html_template = '''
         }
 
         .loading-text {
-            color: #333;
+            color: white;
             margin-top: 10px;
             /* Adjust as needed */
         }
