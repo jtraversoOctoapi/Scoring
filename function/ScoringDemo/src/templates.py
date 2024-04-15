@@ -106,16 +106,13 @@ html_template = '''
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Add this line */
             justify-content: center;
-            /* Add this line */
             width: 100%;
-            max-width: 330px;
-            padding: 15px;
+            padding: 0 35px 0 35px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             background: #fff;
             border-radius: 8px;
-            box-sizing: border-box;
+            height: 25rem;
         }
 
         h1 {
@@ -132,12 +129,13 @@ html_template = '''
 
         input,
         button {
-            width: calc(100% - 20px);
+            width: calc(100%);
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            line-height:1.25rem;
         }
 
         button {
@@ -146,6 +144,7 @@ html_template = '''
             border: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            height: 3rem;
         }
 
         button:hover {
@@ -180,15 +179,13 @@ html_template = '''
         }
 
         #loader {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             position: fixed;
+            padding: 30px;
             left: 50%;
-            top: 50%;
+            top: calc(50% - 75px)
             transform: translate(-50%, -50%);
             z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         .spinner {
@@ -198,12 +195,16 @@ html_template = '''
             width: 50px;
             height: 50px;
             animation: spin 2s linear infinite;
+            left: calc(50% - 25px);
+            top: calc(50% - 1.5* 50px);
+            transform: translate(-50%, -50%);
+            position: absolute;
         }
 
         .loading-text {
             color: white;
-            margin-top: 10px;
-            /* Adjust as needed */
+            top: 75px;
+            position: relative;
         }
 
         /* Animación de giro */
