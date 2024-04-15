@@ -186,6 +186,7 @@ html_template = '''
             transform: translate(-50%, -50%);
             z-index: 1000;
             background-color: rgba(0, 0, 0, 0.5);
+            height:150px;
         }
 
         .spinner {
@@ -196,7 +197,7 @@ html_template = '''
             height: 50px;
             animation: spin 2s linear infinite;
             left: calc(50% - 25px);
-            top: calc(50% - 1.5* 50px);
+            top: calc(50% - 75px);
             transform: translate(-50%, -50%);
             position: absolute;
         }
@@ -205,6 +206,8 @@ html_template = '''
             color: white;
             top: 75px;
             position: relative;
+            font-size: 22px;
+            font-weight: 600;
         }
 
         /* Animación de giro */
