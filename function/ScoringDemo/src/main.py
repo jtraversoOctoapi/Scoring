@@ -33,7 +33,6 @@ def main(context):
                 return context.res.json({'error': str(e)}, 500)
         else:
             return context.res.json({'message': 'Invalid path'}, 400)
-        
     elif context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
         formData = parse_qs(context.req.body)
         rut = formData.get('rut', [''])[0]
