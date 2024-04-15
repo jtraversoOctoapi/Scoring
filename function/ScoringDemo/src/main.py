@@ -18,7 +18,9 @@ database = Databases(client)
 
 def main(context):
     if context.req.method == 'GET':
-        return context.res.send(html_template, 200, {'content-type': 'text/html'})
+        path_parts = context.req.path.split('/')
+        if len(path_parts) <= 2:
+            return context.res.send(html_template, 200, {'content-type': 'text/html'})
     
     # Utiliza .get() para acceder al encabezado 'content-type' y normaliza el nombre del encabezado a minúsculas
     content_type = context.req.headers.get('content-type', '').lower()
