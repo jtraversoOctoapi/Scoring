@@ -108,19 +108,7 @@ html_template = '''
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Add this line */
-            justify-content: center;
-            /* Add this line */
-            width: 100%;
-            max-width: 330px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background: #fff;
-            border-radius: 8px;
-            box-sizing: border-box;
+            justify-content: space-around;
         }
 
         h1 {
@@ -153,6 +141,10 @@ html_template = '''
             transition: background-color 0.3s ease;
         }
 
+        .button, .textarea {
+            width: 100%; /* Ajustar según necesidad */
+        }
+
         button:hover {
             background-color: #0056b3;
         }
@@ -170,7 +162,7 @@ html_template = '''
         }
 
         .modal-content {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 5px;
             width: 80%;
@@ -182,6 +174,10 @@ html_template = '''
             height: 300px;
             /* Ajuste según necesites */
             overflow-y: scroll;
+        }
+
+        .loading-text {
+            color: #333; /* Color de texto visible sobre fondo oscuro */
         }
 
         #loader {
