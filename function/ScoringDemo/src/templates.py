@@ -72,7 +72,7 @@ function checkForResponse(documentId) {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '661c067e476507040f30.appwrite.global'
-            },
+            }
         })
         .then(response => {
             console.log("response: ", response)
