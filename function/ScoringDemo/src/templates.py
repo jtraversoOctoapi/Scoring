@@ -109,6 +109,13 @@ html_template = '''
 
         .container {
             justify-content: space-around;
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
         }
 
         h1 {
