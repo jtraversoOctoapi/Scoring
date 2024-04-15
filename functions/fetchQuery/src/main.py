@@ -13,13 +13,12 @@ database = Databases(client)
 def main(context):
     if context.req.method == 'GET':
         try:
-            # Extract the document ID from the path
             path_parts = context.req.path.split('/')
             if len(path_parts) == 3 and path_parts[1] == 'documents':
                 document_id = path_parts[2]
                 result = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
-                return context.res.json(result,200,{'Access-Control-Allow-Origin' = '*'})
+                return context.res.json(result, 200, {'Access-Control-Allow-Origin': '*'})
             else:
-                return context.res.json({'message': 'Invalid path'},400,{'Access-Control-Allow-Origin' = '*'})
+                return context.res.json({'message': 'Invalid path'}, 400, {'Access-Control-Allow-Origin': '*'})
         except Exception as e:
-            return context.res.json({'error': str(e)},500,{'Access-Control-Allow-Origin' = '*'})
+            return context.res.json({'error': str(e)}, 500, {'Access-Control-Allow-Origin': '*'})
