@@ -32,12 +32,12 @@ def main(context):
                 rut = path_parts[2]
                 if rut:
                     data = generate_random_data(rut)
-                    return context['response'].json(data, 200)
+                    return context.res.json(data, 200)
                 else:
-                    return context['response'].json({'message': 'RUT is required'}, 400)
+                    return context.res.json({'message': 'RUT is required'}, 400)
             else:
-                return context['response'].json({'message': 'Invalid path or missing RUT'}, 400)
+                return context.res.json(({'message': 'Invalid path or missing RUT'}, 400)
         except Exception as e:
-            return context['response'].json({'error': str(e)}, 500)
+            eturn context.res.json({'error': str(e)}, 500)
     else:
         context['response'].empty()
