@@ -72,8 +72,7 @@ html_template = '''
                         method: 'GET', // o 'POST' si ese es el método requerido
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
-                                // Aquí puedes agregar más encabezados si son necesarios
-                            }
+                        }
                     })
                         .then(response => response.json())
                         .then(data => {
@@ -104,20 +103,21 @@ html_template = '''
             font-family: Arial, sans-serif;
         }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background: #fff;
-    border-radius: 8px;
-    box-sizing: border-box;
-    margin: auto; /* Asegura que se centre horizontalmente */
-}
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin: auto;
+            /* Asegura que se centre horizontalmente */
+        }
 
         h1 {
             color: #333;
@@ -180,32 +180,34 @@ html_template = '''
             overflow-y: scroll;
         }
 
-#loader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-}
+        #loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
 
-spinner {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px; /* Espacio entre el spinner y el texto */
-    animation: spin 2s linear infinite;
-}
+        spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-bottom: 8px;
+            /* Espacio entre el spinner y el texto */
+            animation: spin 2s linear infinite;
+        }
 
-.loading-text {
-    color: white;
-    font-size: 1.2em; /* Ajusta el tamaño del texto si es necesario */
-    text-align: center;
-}
+        .loading-text {
+            color: white;
+            font-size: 1.2em;
+            /* Ajusta el tamaño del texto si es necesario */
+            text-align: center;
+        }
 
         /* Animación de giro */
         @keyframes spin {
