@@ -83,6 +83,7 @@ html_template = '''
                         });
                 }, 2000); // Consulta cada 2 segundos
             }
+        }
     </script>
     <style>
         body,
