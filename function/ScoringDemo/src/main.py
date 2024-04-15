@@ -60,7 +60,7 @@ def main(context):
                     "email": email,
                     "rut": rut,
                     "created_at": created_at
-        }, 200)
+                }, 200)
             else:
                 return context.res.json({"error": "Error en el proceso del webhook.", "status_code": response.status_code}, status=response.status_code)
         except Exception as e:
