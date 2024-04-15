@@ -252,7 +252,7 @@ html_template = '''
                 <input type="number" id="monto" name="monto" required>
             </div>
             <div>
-                <label for="rut">Plazo:</label>
+                <label for="rut">Plazo (días):</label>
                 <input type="number" id="plazo" name="plazo" required>
             </div>
             <div>
