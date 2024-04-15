@@ -65,29 +65,33 @@ html_template = '''
                     });
             });
 
-            function checkForResponse(documentId) {
-                console.log('Verificando respuesta para el documento', documentId); // Añadir console.log para depuración
-                const interval = setInterval(() => {
-                    fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Verificación de datos', data); // Añadir console.log para ver los datos de la verificación
-                            if (data.respuesta !== null) {
-                                clearInterval(interval); // Detiene las comprobaciones
-                                document.getElementById('loader').style.display = 'none'; // Ocultar el loader
-                                openModal(data.respuesta); // Abre el modal con la respuesta
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error al consultar el documento:', error);
-                        });
-                }, 2000); // Consulta cada 2 segundos
+function checkForResponse(documentId) {
+    console.log('Verificando respuesta para el documento', documentId, ' url:','https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId)';
+    const interval = setInterval(() => {
+        fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`, {
+            method: 'GET', // Puede que no necesites el header de 'Content-Type' para una solicitud GET
+        })
+        .then(response => {
+            console.log("response: ", response)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            } else {
+                return response.json();
             }
+        })
+        .then(data => {
+            console.log('Verificación de datos', data);
+            if (data.respuesta !== null) {
+                clearInterval(interval);
+                document.getElementById('loader').style.display = 'none';
+                openModal(data.respuesta);
+            }
+        })
+        .catch(error => {
+            console.error('Error al consultar el documento:', error.message);
+        });
+    }, 2000);
+}
         });
     </script>
     <style>
