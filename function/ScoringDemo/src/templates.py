@@ -182,7 +182,7 @@ html_template = '''
             position: fixed;
             padding: 30px;
             left: 50%;
-            top: calc(50% - 75px)
+            top: calc(50% - 75px);
             transform: translate(-50%, -50%);
             z-index: 1000;
             background-color: rgba(0, 0, 0, 0.5);
