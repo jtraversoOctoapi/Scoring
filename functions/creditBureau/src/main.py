@@ -38,6 +38,6 @@ def main(context):
             else:
                 return context.res.json(({'message': 'Invalid path or missing RUT'}, 400)
         except Exception as e:
-            eturn context.res.json({'error': str(e)}, 500)
+            return context.res.json({'error': str(e)}, 500)
     else:
         context['response'].empty()
