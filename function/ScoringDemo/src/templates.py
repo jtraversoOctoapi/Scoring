@@ -68,7 +68,13 @@ html_template = '''
             function checkForResponse(documentId) {
                 console.log('Verificando respuesta para el documento', documentId); // Añadir console.log para depuración
                 const interval = setInterval(() => {
-                    fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`)
+                    fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`, {
+                        method: 'GET', // o 'POST' si ese es el método requerido
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                                // Aquí puedes agregar más encabezados si son necesarios
+                            }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             console.log('Verificación de datos', data); // Añadir console.log para ver los datos de la verificación
@@ -98,21 +104,20 @@ html_template = '''
             font-family: Arial, sans-serif;
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Add this line */
-            justify-content: center;
-            /* Add this line */
-            width: 100%;
-            max-width: 330px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background: #fff;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin: auto; /* Asegura que se centre horizontalmente */
+}
 
         h1 {
             color: #333;
@@ -175,32 +180,32 @@ html_template = '''
             overflow-y: scroll;
         }
 
-        #loader {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-        }
+#loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
 
-        .spinner {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-        }
+spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px; /* Espacio entre el spinner y el texto */
+    animation: spin 2s linear infinite;
+}
 
-        .loading-text {
-            color: white;
-            margin-top: 10px;
-            /* Adjust as needed */
-        }
+.loading-text {
+    color: white;
+    font-size: 1.2em; /* Ajusta el tamaño del texto si es necesario */
+    text-align: center;
+}
 
         /* Animación de giro */
         @keyframes spin {
