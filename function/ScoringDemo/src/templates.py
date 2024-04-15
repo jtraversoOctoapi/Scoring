@@ -50,7 +50,7 @@ html_template = '''
                 if (response.ok) {
                     response.text().then(text => {
                         console.log('Respuesta como texto:', text);
-                        checkForResponse(text); // Asumimos que checkForResponse puede manejar una respuesta en texto si es necesario
+                         return response.text();  // Asumimos que la respuesta es texto y no JSON
                     });
                 } else {
                     response.text().then(text => {
