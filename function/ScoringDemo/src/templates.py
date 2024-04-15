@@ -8,14 +8,14 @@ html_template = '''
     <title>DEMO SCORING</title>
     <link rel="stylesheet" href="https://unpkg.com/pico.css">
     <script>
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+         }
+         
         document.addEventListener('DOMContentLoaded', function () {
             function openModal(response) {
                 document.getElementById('responseText').value = response;
                 document.getElementById('modal').style.display = 'flex';
-            }
-
-            function closeModal() {
-                document.getElementById('modal').style.display = 'none';
             }
 
             function formDataToUrlEncoded(formElement) {
