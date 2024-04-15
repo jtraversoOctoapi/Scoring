@@ -54,12 +54,20 @@ def main(context):
             # Enviar los datos al webhook y capturar la respuesta
             response = requests.post(webhook_url, json=data_to_send)
             if response.status_code == 200:
-                    return context.res.json({"message": "Datos enviados correctamente al webhook", "response": response.text}, status=200)
+                return context.res.json({
+                    "message": "Datos enviados correctamente al webhook.",
+                    "document_id": document_id,
+                    "email": email,
+                    "rut": rut,
+                    "created_at": created_at
+        }, status=200)
             else:
                 return context.res.json({"error": "Error en el proceso del webhook.", "status_code": response.status_code}, status=response.status_code)
         except Exception as e:
-            response_message = f"Ocurrió un error al procesar la solicitud: {str(e)}"
-            return context.res.send(response_message, 400, {'Content-Type': 'text/plain'})
+            return context.res.json({
+                "error": "Ocurrió un error al procesar la solicitud.",
+                "message": str(e)
+            }, status=500)
     else:
         error_message = {
             "error": True,
