@@ -65,29 +65,34 @@ html_template = '''
                     });
             });
 
-        fetch(`/documents/${documentId}`, {
-            method: 'GET'
-            })
-        .then(response => {
-            console.log("response: ", response)
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            } else {
-                return response.json();
-            }
-        })
-        .then(data => {
-            console.log('Verificación de datos', data);
-            if (data.respuesta !== null) {
-                clearInterval(interval);
-                document.getElementById('loader').style.display = 'none';
-                openModal(data.respuesta);
-            }
-        })
-        .catch(error => {
-            console.error('Error al consultar el documento:', error.message);
-        });
-    }, 2000);
+        function checkForResponse(documentId) {
+            console.log('Verificando respuesta para el documento', documentId, ' url:','https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId)');
+            const interval = setInterval(() => {
+                fetch(`/documents/${documentId}`, {
+                method: 'GET'
+                })
+                .then(response => {
+                    console.log("response: ", response)
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    } else {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    console.log('Verificación de datos', data);
+                    if (data.respuesta !== null) {
+                        clearInterval(interval);
+                        document.getElementById('loader').style.display = 'none';
+                        openModal(data.respuesta);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al consultar el documento:', error.message);
+                });
+            }, 2000);
+           }
+        }); 
     </script>
     <style>
         body,
