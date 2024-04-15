@@ -29,6 +29,7 @@ def main(context):
         try:
             path_parts = context.req.path.split('/')
             if len(path_parts) == 3 and path_parts[1] == 'rut':
+                  rut = path_parts[2]
                   if rut:
                         data = generate_random_data(rut)
                         return context.res.json(data, 200)
