@@ -38,13 +38,15 @@ def main(context):
         formData = parse_qs(context.req.body)
         rut = formData.get('rut', [''])[0]
         email = formData.get('email', [''])[0]
+        monto = formData.get('monto', [''])[0]
+        plazo = formData.get('plazo', [''])[0]
         
         # Crea un nuevo documento en la colección
         document = database.create_document(
             database_id='661c0ff748205b5d00b5',
             collection_id='661c1000c15d1c28d50a',
             document_id=ID.unique(), 
-            data={'rut': rut, 'email': email},
+            data={'rut': rut, 'email': email, 'monto': monto, 'plazo': plazo},
         )
         
         # Extrae el ID del nuevo documento
@@ -55,6 +57,8 @@ def main(context):
         data_to_send = {
             'rut': rut,
             'email': email,
+            'monto': monto,
+            'plazo': plazo,
             'document_id': document_id,
             'created_at': created_at
         }
@@ -69,6 +73,8 @@ def main(context):
                     "message": "Datos enviados correctamente al webhook.",
                     "document_id": document_id,
                     "email": email,
+                    'monto': monto,
+                    'plazo': plazo,
                     "rut": rut,
                     "created_at": created_at
                 }, 200)
