@@ -69,7 +69,7 @@ html_template = '''
                 console.log('Verificando respuesta para el documento', documentId); // Añadir console.log para depuración
                 const interval = setInterval(() => {
                     fetch(`https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId}`, {
-                        method: 'GET', // o 'POST' si ese es el método requerido
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                         }
@@ -107,7 +107,9 @@ html_template = '''
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* Add this line */
             justify-content: center;
+            /* Add this line */
             width: 100%;
             max-width: 330px;
             padding: 15px;
@@ -115,8 +117,6 @@ html_template = '''
             background: #fff;
             border-radius: 8px;
             box-sizing: border-box;
-            margin: auto;
-            /* Asegura que se centre horizontalmente */
         }
 
         h1 {
@@ -184,29 +184,27 @@ html_template = '''
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             position: fixed;
-            top: 50%;
             left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
             z-index: 1000;
         }
 
-        spinner {
+        .spinner {
             border: 6px solid #f3f3f3;
             border-top: 6px solid #3498db;
             border-radius: 50%;
             width: 50px;
             height: 50px;
-            margin-bottom: 8px;
-            /* Espacio entre el spinner y el texto */
             animation: spin 2s linear infinite;
         }
 
         .loading-text {
             color: white;
-            font-size: 1.2em;
-            /* Ajusta el tamaño del texto si es necesario */
-            text-align: center;
+            margin-top: 10px;
+            /* Adjust as needed */
         }
 
         /* Animación de giro */
