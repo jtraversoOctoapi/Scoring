@@ -1,37 +1,34 @@
-from appwrite.client import Client
-import os
+import random
 
+# Estados posibles para el crédito
+credit_statuses = ["Normal", "Atrasado", "Moroso", "Sin Deudas"]
 
-# This is your Appwrite function
-# It's executed each time we get a request
+def generate_random_data(rut):
+    """Genera datos ficticios basados en el RUT."""
+    estado_credito = random.choice(credit_statuses)
+    total_deudas = random.randint(0, 10000000)  # Total de deudas en CLP
+    score_credito = random.randint(0, 1000)  # Score entre 0 y 1000
+
+    return {
+        "nombre": "Cliente " + rut,
+        "rut": rut,
+        "estado_credito": estado_credito,
+        "total_deudas": total_deudas,
+        "score_credito": score_credito
+    }
+
 def main(context):
-    # Why not try the Appwrite SDK?
-    #
-    # client = (
-    #     Client()
-    #     .set_endpoint("https://cloud.appwrite.io/v1")
-    #     .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-    #     .set_key(os.environ["APPWRITE_API_KEY"])
-    # )
-
-    # You can log messages to the console
-    context.log("Hello, Logs!")
-
-    # If something goes wrong, log an error
-    context.error("Hello, Errors!")
-
-    # The `ctx.req` object contains the request data
-    if context.req.method == "GET":
-        # Send a response with the res object helpers
-        # `ctx.res.send()` dispatches a string back to the client
-        return context.res.send("Hello, World!")
-
-    # `ctx.res.json()` is a handy helper for sending JSON
-    return context.res.json(
-        {
-            "motto": "Build like a team of hundreds_",
-            "learn": "https://appwrite.io/docs",
-            "connect": "https://appwrite.io/discord",
-            "getInspired": "https://builtwith.appwrite.io",
-        }
-    )
+    if context.req.method == 'GET':
+        try:
+            # El RUT se podría extraer de la URL o de los parámetros de consulta
+            rut = context.req.param('rut')
+            if not rut:
+                return context.res.json({'message': 'RUT is required'}, 400)
+            
+            # Genera datos aleatorios basados en el RUT proporcionado
+            data = generate_random_data(rut)
+            return context.res.json(data, 200)
+        except Exception as e:
+            return context.res.json({'error': str(e)}, 500)
+    else:
+        context.res.empty()
