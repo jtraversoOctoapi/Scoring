@@ -25,7 +25,7 @@ def generate_random_data(rut):
     }
 
 def main(context):
-    if context['request']['method'] == 'GET':
+    if context.req.method == 'GET':
         try:
             path_parts = context['request']['path'].split('/')
             if len(path_parts) >= 3 and path_parts[1] == 'rut':
