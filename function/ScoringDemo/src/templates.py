@@ -1,6 +1,7 @@
 html_template = '''
 <!doctype html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,34 +65,29 @@ html_template = '''
                     });
             });
 
-        function checkForResponse(documentId) {
-            console.log('Verificando respuesta para el documento', documentId, ' url:','https://661c32a7cbb49de418a6.appwrite.global/documents/${documentId)');
-            const interval = setInterval(() => {
-                fetch(`/documents/${documentId}`, {
-                method: 'GET'
-                })
-                .then(response => {
-                    console.log("response: ", response)
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    } else {
-                        return response.json();
-                    }
-                })
-                .then(data => {
-                    console.log('Verificación de datos', data);
-                    if (data.respuesta !== null) {
-                        clearInterval(interval);
-                        document.getElementById('loader').style.display = 'none';
-                        openModal(data.respuesta);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al consultar el documento:', error.message);
-                });
-            }, 2000);
-           }
-        }); 
+        fetch(`/documents/${documentId}`, {
+            method: 'GET'
+            })
+        .then(response => {
+            console.log("response: ", response)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            console.log('Verificación de datos', data);
+            if (data.respuesta !== null) {
+                clearInterval(interval);
+                document.getElementById('loader').style.display = 'none';
+                openModal(data.respuesta);
+            }
+        })
+        .catch(error => {
+            console.error('Error al consultar el documento:', error.message);
+        });
+    }, 2000);
     </script>
     <style>
         body,
@@ -107,7 +103,12 @@ html_template = '''
         }
 
         .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Add this line */
             justify-content: space-around;
+            /* Add this line */
             width: 100%;
             max-width: 330px;
             padding: 15px;
@@ -147,12 +148,12 @@ html_template = '''
             transition: background-color 0.3s ease;
         }
 
-        .button, .textarea {
-            width: 100%; /* Ajustar según necesidad */
-        }
-
         button:hover {
             background-color: #0056b3;
+        }
+
+        .button, .textarea {
+            width: 100%; /* Ajustar según necesidad */
         }
 
         .modal {
@@ -165,10 +166,11 @@ html_template = '''
             display: none;
             align-items: center;
             justify-content: center;
+            z-index:1000;
         }
 
         .modal-content {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: white;
             padding: 20px;
             border-radius: 5px;
             width: 80%;
@@ -180,10 +182,6 @@ html_template = '''
             height: 300px;
             /* Ajuste según necesites */
             overflow-y: scroll;
-        }
-
-        .loading-text {
-            color: #333; /* Color de texto visible sobre fondo oscuro */
         }
 
         #loader {
@@ -208,7 +206,7 @@ html_template = '''
         }
 
         .loading-text {
-            color: white;
+            color: #333;
             margin-top: 10px;
             /* Adjust as needed */
         }
