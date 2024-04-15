@@ -15,12 +15,11 @@ def main(context):
         try:
             # Extract the document ID from the path
             path_parts = context.req.path.split('/')
-            context.res.headers['Access-Control-Allow-Origin'] = '*'
             if len(path_parts) == 3 and path_parts[1] == 'documents':
                 document_id = path_parts[2]
                 result = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
-                return context.res.json(result,200)
+                return context.res.json(result,200,{'Access-Control-Allow-Origin' = '*'})
             else:
-                return context.res.json({'message': 'Invalid path'},400)
+                return context.res.json({'message': 'Invalid path'},400,{'Access-Control-Allow-Origin' = '*'})
         except Exception as e:
-            return context.res.json({'error': str(e)},500)
+            return context.res.json({'error': str(e)},500,{'Access-Control-Allow-Origin' = '*'})
