@@ -17,27 +17,17 @@ client.set_endpoint('https://cloud.appwrite.io/v1') \
 database = Databases(client)
 
 def main(context):
-    content_type = context.req.headers.get('content-type', '').lower()
     if context.req.method == 'GET':
-        path_parts = context.req.path.split('/')
-        if len(path_parts) == 1:
-            # Servir la página HTML principal si no hay más partes en la ruta
-            return context.res.send(html_template, 200, {'Content-Type': 'text/html'})
-        elif len(path_parts) == 3 and path_parts[1] == 'documents':
-            # Buscar y devolver un documento si la ruta es del tipo /documents/{documentId}
-            document_id = path_parts[2]
-            try:
-                result = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
-                return context.res.json(result, 200)
-            except Exception as e:
-                return context.res.json({'error': str(e)}, 500)
-        else:
-            return context.res.json({'message': 'Invalid path'}, 400)
-    elif context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
+        return context.res.send(html_template, 200, {'content-type': 'text/html'})
+    
+    # Utiliza .get() para acceder al encabezado 'content-type' y normaliza el nombre del encabezado a minúsculas
+    content_type = context.req.headers.get('content-type', '').lower()
+    
+    if context.req.method == 'POST' and 'application/x-www-form-urlencoded' in content_type:
         formData = parse_qs(context.req.body)
         rut = formData.get('rut', [''])[0]
         email = formData.get('email', [''])[0]
-            
+        
         # Crea un nuevo documento en la colección
         document = database.create_document(
             database_id='661c0ff748205b5d00b5',
