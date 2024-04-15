@@ -30,7 +30,7 @@ def main(context):
                 return context.res.json({'error': str(e)}, 500)
         else:
             return context.res.json({'message': 'Invalid path'}, 400)
-    
+            
     # Utiliza .get() para acceder al encabezado 'content-type' y normaliza el nombre del encabezado a minúsculas
     content_type = context.req.headers.get('content-type', '').lower()
     
