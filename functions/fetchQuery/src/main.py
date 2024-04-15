@@ -18,11 +18,8 @@ def main(context):
             if len(path_parts) == 3 and path_parts[1] == 'documents':
                 document_id = path_parts[2]
                 result = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
-                context.res.status_code = 200
-                return context.res.json(result)
+                return context.res.json(result,200)
             else:
-                context.res.status_code = 404 
-                return context.res.json({'message': 'Invalid path'})
+                return context.res.json({'message': 'Invalid path'},400)
         except Exception as e:
-            context.res.status_code = 500  # Set the status code
-            return context.res.json({'error': str(e)})
+            return context.res.json({'error': str(e)},500)
