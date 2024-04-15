@@ -21,7 +21,7 @@ def main(context):
     content_type = context.req.headers.get('content-type', '').lower()
     
     if context.req.method == 'GET':
-        if len(path_parts) <= 2
+        if len(path_parts) <= 2:
             return context.res.send(html_template, 200, {'Content-Type': 'text/html'})
         elif len(path_parts) == 3 and path_parts[1] == 'documents':
             document_id = path_parts[2]
