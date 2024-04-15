@@ -117,7 +117,7 @@ html_template = '''
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             background: #fff;
             border-radius: 8px;
-            height: 25rem;
+            height: 37.5rem;
         }
 
         h1 {
