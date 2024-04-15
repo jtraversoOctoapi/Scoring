@@ -248,6 +248,14 @@ html_template = '''
                 <input type="text" id="rut" name="rut" required>
             </div>
             <div>
+                <label for="rut">Monto:</label>
+                <input type="number" id="monto" name="monto" required>
+            </div>
+            <div>
+                <label for="rut">Plazo:</label>
+                <input type="number" id="plazo" name="plazo" required>
+            </div>
+            <div>
                 <label for="email">Email de Notificación Resultado:</label>
                 <input type="email" id="email" name="email" required>
             </div>
