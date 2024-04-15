@@ -27,8 +27,15 @@ def generate_random_data(rut):
 def main(context):
     if context.req.method == 'GET':
         try:
-            # El RUT se podría extraer de la URL o de los parámetros de consulta
-            rut = context.req.param('rut')
+            path_parts = context.req.path.split('/')
+            if len(path_parts) == 3 and path_parts[1] == 'rut':
+                rut = path_parts[2]
+                if not rut:
+                    return context.res.json({'message': 'RUT is required'}, 400)
+                
+                data = generate_random_data(rut)
+                return context.res.json(data, 200)
+            
             if not rut:
                 return context.res.json({'message': 'RUT is required'}, 400)
             
