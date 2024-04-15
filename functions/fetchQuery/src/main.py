@@ -22,3 +22,6 @@ def main(context):
                 return context.res.json({'message': 'Invalid path'}, 400, {'Access-Control-Allow-Origin': '*'})
         except Exception as e:
             return context.res.json({'error': str(e)}, 500, {'Access-Control-Allow-Origin': '*'})
+        
+    else:
+        context.res.empty()
