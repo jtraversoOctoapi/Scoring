@@ -88,8 +88,6 @@ html_template = '''
             console.error('Error al consultar el documento:', error.message);
         });
     }, 2000);
-}
-        });
     </script>
     <style>
         body,
