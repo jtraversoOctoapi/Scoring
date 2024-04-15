@@ -25,24 +25,19 @@ def generate_random_data(rut):
     }
 
 def main(context):
-    if context.req.method == 'GET':
+    if context['request']['method'] == 'GET':
         try:
-            path_parts = context.req.path.split('/')
-            if len(path_parts) == 3 and path_parts[1] == 'rut':
+            path_parts = context['request']['path'].split('/')
+            if len(path_parts) >= 3 and path_parts[1] == 'rut':
                 rut = path_parts[2]
-                if not rut:
-                    return context.res.json({'message': 'RUT is required'}, 400)
-                
-                data = generate_random_data(rut)
-                return context.res.json(data, 200)
-            
-            if not rut:
-                return context.res.json({'message': 'RUT is required'}, 400)
-            
-            # Genera datos aleatorios basados en el RUT proporcionado
-            data = generate_random_data(rut)
-            return context.res.json(data, 200)
+                if rut:
+                    data = generate_random_data(rut)
+                    return context['response'].json(data, 200)
+                else:
+                    return context['response'].json({'message': 'RUT is required'}, 400)
+            else:
+                return context['response'].json({'message': 'Invalid path or missing RUT'}, 400)
         except Exception as e:
-            return context.res.json({'error': str(e)}, 500)
+            return context['response'].json({'error': str(e)}, 500)
     else:
-        context.res.empty()
+        context['response'].empty()
