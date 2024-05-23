@@ -42,14 +42,25 @@ def main(context):
         plazo = formData.get('plazo', [''])[0]
 
         context.log(f"Received POST data: rut={rut}, email={email}, monto={monto}, plazo={plazo}")
+        # Convertimos el monto a entero antes de usarlo
+        try:
+            monto = int(monto_raw)
+        except ValueError:
+            context.error("Monto no es un número entero válido")
+            return context.res.json({'error': 'Formato de monto inválido. Debe ser un número entero.'}, 400)
         
-        # Crea un nuevo documento en la colección
-        document = database.create_document(
-            database_id='661c0ff748205b5d00b5',
-            collection_id='661c1000c15d1c28d50a',
-            document_id=ID.unique(), 
-            data={'rut': rut, 'email': email, 'monto': monto, 'plazo': plazo},
-        )
+        # Crea un nuevo documento en la coleccióm
+        try:
+            document = database.create_document(
+                database_id='661c0ff748205b5d00b5',
+                collection_id='661c1000c15d1c28d50a',
+                document_id=ID.unique(),
+                data={'rut': rut, 'email': email, 'monto': monto, 'plazo': plazo},
+            )
+        except AppwriteException as e:
+            # Agregamos logging de errores
+            context.error(f"Failed to create document: {str(e)}")
+            return context.res.json({'error': str(e.message)}, 500)
         
         # Extrae el ID del nuevo documento
         document_id = document['$id']
