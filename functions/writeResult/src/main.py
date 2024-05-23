@@ -1,6 +1,7 @@
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.exception import AppwriteException
+import json
 
 # Configuración inicial del cliente de Appwrite
 client = Client()
@@ -34,12 +35,12 @@ def main(context):
                     )
                     return context.res.json(document, 200)
                 except AppwriteException as e:
-                    log(f"Failed to update document: {str(e)}")
+                    context.log(f"Failed to update document: {str(e)}")
                     return context.res.json({'error': str(e.message)}, 500)
             else:
                 return context.res.json({'message': 'Document ID and result are required'}, 400)
         else:
             return context.res.json({'message': 'Invalid path'}, 400)
     except Exception as e:
-        log(f"Unhandled exception: {str(e)}")
+        context.log(f"Unhandled exception: {str(e)}")
         return context.res.json({'error': str(e)}, 500)
