@@ -4,6 +4,7 @@ from appwrite.query import Query
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.id import ID
+from appwrite.exception import AppwriteException
 from urllib.parse import parse_qs
 from .templates import html_template
 
@@ -45,9 +46,10 @@ def main(context):
         # Convertimos el monto a entero antes de usarlo
         try:
             monto = int(monto)
+            plazo = int(plazo)
         except ValueError:
-            context.error("Monto no es un número entero válido")
-            return context.res.json({'error': 'Formato de monto inválido. Debe ser un número entero.'}, 400)
+            context.error("Monto o Plazo no son números enteros válidos")
+            return context.res.json({'error': 'Formato de monto o plazo inválido. Debe ser un número entero.'}, 400)
         
         # Crea un nuevo documento en la coleccióm
         try:
