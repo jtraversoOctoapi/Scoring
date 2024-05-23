@@ -44,7 +44,7 @@ def main(context):
         context.log(f"Received POST data: rut={rut}, email={email}, monto={monto}, plazo={plazo}")
         # Convertimos el monto a entero antes de usarlo
         try:
-            monto = int(monto_raw)
+            monto = int(monto)
         except ValueError:
             context.error("Monto no es un número entero válido")
             return context.res.json({'error': 'Formato de monto inválido. Debe ser un número entero.'}, 400)
