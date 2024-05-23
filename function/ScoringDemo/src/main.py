@@ -64,7 +64,7 @@ def main(context):
         }
         
         # URL del webhook
-        webhook_url = 'https://hook.us1.make.com/iq7pr5ib62ct8pin9qxwsxf5jh2v3w3m'
+        webhook_url = 'https://hook.us1.make.com/ha21ku2cbkw1coj02wk6xbdgq48q1mck'
         try:
             # Enviar los datos al webhook y capturar la respuesta
             response = requests.post(webhook_url, json=data_to_send)
