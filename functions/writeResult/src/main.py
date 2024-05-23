@@ -18,7 +18,7 @@ def main(context):
     
     try:
         # Parsea el JSON del cuerpo de la solicitud
-        body = json.loads(context.req.body)
+        body = json.loads(context.req.body.decode('utf-8'))  # Decodificar y convertir de JSON a diccionario
         result = body.get('result')
         path_parts = context.req.path.split('/')
         
