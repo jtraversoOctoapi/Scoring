@@ -41,11 +41,7 @@ def main(context):
         monto = formData.get('monto', [''])[0]
         plazo = formData.get('plazo', [''])[0]
 
-        console.log({
-            "level": "info",
-            "message": "Received POST data",
-            "data": {'rut': rut, 'email': email, 'monto': monto_raw, 'plazo': plazo}
-        })
+        context.log(f"Received POST data: rut={rut}, email={email}, monto={monto}, plazo={plazo}")
         
         # Crea un nuevo documento en la colección
         document = database.create_document(
