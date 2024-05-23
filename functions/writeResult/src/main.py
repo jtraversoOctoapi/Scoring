@@ -5,20 +5,22 @@ import json
 
 # Configuración inicial del cliente de Appwrite
 client = Client()
-client.set_endpoint('https://cloud.appwrite.io/v1')
-client.set_project('661bf232a2d367eccb49')
+client.set_endpoint('https://cloud.appwrite.io/v1')  # Tu endpoint de API
+client.set_project('661bf232a2d367eccb49')  # Tu ID de proyecto
+# Opcional: Configura la sesión si es necesario
 
 database = Databases(client)
 
-def main(req, res, log):
-    if req.method != 'POST':
-        return res.json({'message': 'Invalid request method, POST required'}, 405)
-
+def main(context,req, res, log):
+    # Verificar que el método de la solicitud sea POST
+    if context.req.method != 'POST':
+        return context.res.json({'message': 'Invalid request method, POST required'}, 405)
+    
     try:
         # Asumiendo que req.body ya contiene un objeto JSON parseado
         body = req.body
         result = body.get('result')
-        path_parts = req.path.split('/')
+        path_parts = context.req.path.split('/')
         
         if len(path_parts) == 3 and path_parts[1] == 'document_id':
             document_id = path_parts[2]
@@ -32,14 +34,13 @@ def main(req, res, log):
                         data={'respuesta': result},
                         permissions=['read("any")', 'write("any")']  # Puedes ajustar los permisos según sea necesario
                     )
-                    return res.json(document, 200)
+                    return context.res.json(document, 200)
                 except AppwriteException as e:
-                    log(f"Failed to update document: {str(e)}")
-                    return res.json({'error': str(e.message)}, 500)
+                    context.error(f"Failed to update document: {str(e)}")
+                    return context.res.json({'error': str(e.message)}, 500)
             else:
-                return res.json({'message': 'Document ID and result are required'}, 400)
+                return context.res.json({'message': 'Document ID and result are required'}, 400)
         else:
-            return res.json({'message': 'Invalid path'}, 400)
+            return context.res.json({'message': 'Invalid path'}, 400)
     except Exception as e:
-        return res.json({'error': str(e)}, 500)
-
+        return context.res.json({'error': str(e)}, 500)
