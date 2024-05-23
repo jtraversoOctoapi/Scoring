@@ -17,11 +17,8 @@ def main(context):
         return context.res.json({'message': 'Invalid request method, POST required'}, 405)
     
     try:
-        if isinstance(context.req.body, bytes):
-            body = json.loads(context.req.body.decode('utf-8'))  # Solo decodifica si es bytes
-        else:
-            body = json.loads(context.req.body)  # Directamente carga si ya es una cadena
-
+        # Asumiendo que req.body ya contiene un objeto JSON parseado
+        body = req.body
         result = body.get('result')
         path_parts = context.req.path.split('/')
         
