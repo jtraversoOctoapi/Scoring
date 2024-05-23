@@ -1,7 +1,6 @@
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.exception import AppwriteException
-import json
 
 # Configuración inicial del cliente de Appwrite
 client = Client()
@@ -11,15 +10,15 @@ client.set_project('661bf232a2d367eccb49')  # Tu ID de proyecto
 
 database = Databases(client)
 
-def main(req, res, log):
+def main(context):
     # Verificar que el método de la solicitud sea POST
-    if req.method != 'POST':
-        return res.json({'message': 'Invalid request method, POST required'}, 405)
+    if context.req.method != 'POST':
+        return context.res.json({'message': 'Invalid request method, POST required'}, 405)
 
     try:
-        body = req.body
+        body = context.req.body
         result = body.get('result')
-        path_parts = req.path.split('/')
+        path_parts = context.req.path.split('/')
         
         if len(path_parts) == 3 and path_parts[1] == 'document_id':
             document_id = path_parts[2]
@@ -33,14 +32,14 @@ def main(req, res, log):
                         data={'respuesta': result},
                         permissions=['read("any")', 'write("any")']
                     )
-                    return res.json(document, 200)
+                    return context.res.json(document, 200)
                 except AppwriteException as e:
                     log(f"Failed to update document: {str(e)}")
-                    return res.json({'error': str(e.message)}, 500)
+                    return context.res.json({'error': str(e.message)}, 500)
             else:
-                return res.json({'message': 'Document ID and result are required'}, 400)
+                return context.res.json({'message': 'Document ID and result are required'}, 400)
         else:
-            return res.json({'message': 'Invalid path'}, 400)
+            return context.res.json({'message': 'Invalid path'}, 400)
     except Exception as e:
         log(f"Unhandled exception: {str(e)}")
-        return res.json({'error': str(e)}, 500)
+        return context.res.json({'error': str(e)}, 500)
