@@ -12,7 +12,7 @@ from .templates import html_template
 client = Client()
 client.set_endpoint('https://cloud.appwrite.io/v1') \
     .set_project('661bf232a2d367eccb49') \
-    .set_key('68a4559f483223bde0c57f0630be9b37191a1a809353da2538a1dcbc3da07039cdf6e9e09a62ae01baa5f026b241981f7cf95ea4be884a12cd95b23d22baae2cc25540fe12cb9655224b0d5c8b7d7022098e7afa558724718032854c413b0d25d08cd6c8615c61e611c6ad83b225f61e4a5bea40ef1b8b4573343bfea693d58a')
+    .set_key('4696530faf1dc21b98494c53ccf64ba08dc92dc8a2842d920b6a896bbb7e252da7aab922eecb3244921a356c7e5ee39227d710d3c09d88ec5536b73d7697ae6b7e5818ada4a12a72b9ef893ebba6dc7ecb60c2f0bdf024b50f88a2ac1f5a0c56ac619f2cc20e943f2bf12ce2019187a756f99f82d3b3e68cf51c64716c6f8297')
 
 # Initialize the database client
 database = Databases(client)
