@@ -17,7 +17,7 @@ def main(req, res, log):
         return res.json({'message': 'Invalid request method, POST required'}, 405)
 
     try:
-        body = json.loads(req.body)  # Asegúrate de que se maneje la carga del JSON correctamente
+        body = req.body
         result = body.get('result')
         path_parts = req.path.split('/')
         
