@@ -14,8 +14,15 @@ html_template = '''
          
         document.addEventListener('DOMContentLoaded', function () {
             function openModal(response) {
-                document.getElementById('responseText').value = response;
+                document.getElementById('responseText').value = JSON.stringify(response, null, 2);  // Asegurándose de formatear bien el JSON;
                 document.getElementById('modal').style.display = 'flex';
+
+                // Configurar el botón Ver Detalles
+                var detailsButton = document.getElementById('viewDetailsButton');
+                detailsButton.style.display = 'block';  // Mostrar el botón
+                detailsButton.onclick = function() {
+                window.location.href = `https://6657978e8e66c93e5ff2.appwrite.global/document_id/${documentId}`;  // Redirigir al detalle del documento
+                };
             }
 
             function formDataToUrlEncoded(formElement) {
@@ -84,7 +91,7 @@ html_template = '''
                     if (data.respuesta !== null) {
                         clearInterval(interval);
                         document.getElementById('loader').style.display = 'none';
-                        openModal(data.respuesta);
+                        openModal(data.respuesta, documentId);  // Asegúrate de pasar el documentId
                     }
                 })
                 .catch(error => {
@@ -233,6 +240,7 @@ html_template = '''
         <div class="modal-content">
             <h1>Respuesta de la Evaluación</h1>
             <textarea readonly id="responseText"></textarea>
+            <button id="viewDetailsButton" style="display: none;">Ver Detalles</button>
             <button onclick="closeModal()">Cerrar</button>
         </div>
     </div>
