@@ -21,7 +21,11 @@ html_template = env.from_string("""
     <meta charset="UTF-8">
     <title>Detalle del Documento</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss@1.0.0-beta.6/pico.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
         .responsive-table {
             overflow-x: auto;
         }
