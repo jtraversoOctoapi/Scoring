@@ -17,7 +17,7 @@ def main(context):
         return context.res.json({'message': 'Invalid request method, POST required'}, 405)
 
     try:
-        body = json.loads(context.req.body)
+        body = context.req.body
         result = json.dumps(body)
         path_parts = context.req.path.split('/')
         
