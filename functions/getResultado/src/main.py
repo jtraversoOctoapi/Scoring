@@ -1,37 +1,44 @@
 from appwrite.client import Client
-import os
+from appwrite.services.databases import Databases
+from appwrite.exception import AppwriteException
+from .templates import html_template  # Asegúrate de tener una plantilla HTML adecuada para renderizar la salida
 
+# Configuración inicial del cliente de Appwrite
+client = Client()
+client.set_endpoint('https://cloud.appwrite.io/v1') \
+    .set_project('661bf232a2d367eccb49') \
+    .set_key('68a4559f483223bde0c57f0630be9b37191a1a809353da2538a1dcbc3da07039cdf6e9e09a62ae01baa5f026b241981f7cf95ea4be884a12cd95b23d22baae2cc25540fe12cb9655224b0d5c8b7d7022098e7afa558724718032854c413b0d25d08cd6c8615c61e611c6ad83b225f61e4a5bea40ef1b8b4573343bfea693d58a')
 
-# This is your Appwrite function
-# It's executed each time we get a request
+database = Databases(client)
+
 def main(context):
-    # Why not try the Appwrite SDK?
-    #
-    # client = (
-    #     Client()
-    #     .set_endpoint("https://cloud.appwrite.io/v1")
-    #     .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-    #     .set_key(os.environ["APPWRITE_API_KEY"])
-    # )
+    if context.req.method != 'GET':
+        return context.res.json({'message': 'Invalid request method, GET required'}, 405)
 
-    # You can log messages to the console
-    context.log("Hello, Logs!")
+    path_parts = context.req.path.split('/')
+    if len(path_parts) != 3 or path_parts[1] != 'document_id':
+        return context.res.json({'message': 'Invalid path format'}, 400)
 
-    # If something goes wrong, log an error
-    context.error("Hello, Errors!")
+    document_id = path_parts[2]
+    if not document_id:
+        return context.res.json({'message': 'Document ID is required'}, 400)
 
-    # The `ctx.req` object contains the request data
-    if context.req.method == "GET":
-        # Send a response with the res object helpers
-        # `ctx.res.send()` dispatches a string back to the client
-        return context.res.send("Hello, World!")
+    try:
+        # Recupera el documento especificado
+        document = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
+        response_data = document['respuesta']
 
-    # `ctx.res.json()` is a handy helper for sending JSON
-    return context.res.json(
-        {
-            "motto": "Build like a team of hundreds_",
-            "learn": "https://appwrite.io/docs",
-            "connect": "https://appwrite.io/discord",
-            "getInspired": "https://builtwith.appwrite.io",
-        }
-    )
+        # Preparar datos para renderizar en la plantilla HTML
+        basic_info = {key: response_data[key] for key in ['rut', 'email', 'monto', 'plazo', 'Lista Negra', 'Lista Blanca', 'estado_credito', 'total_deudas', 'score_credito']}
+        pricing_results = response_data['Resultado Pricing']
+
+        # Renderizar la página HTML con los datos
+        html_content = html_template.render(basic_info=basic_info, pricing_results=pricing_results)
+        return context.res.send(html_content, 200, {'content-type': 'text/html'})
+
+    except AppwriteException as e:
+        return context.res.json({'error': str(e.message)}, 500)
+
+    except Exception as e:
+        return context.res.json({'error': str(e)}, 500)
+
