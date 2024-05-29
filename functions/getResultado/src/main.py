@@ -2,6 +2,7 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.exception import AppwriteException
 from .templates import html_template  # Asegúrate de tener una plantilla HTML adecuada para renderizar la salida
+import json
 
 # Configuración inicial del cliente de Appwrite
 client = Client()
@@ -26,7 +27,7 @@ def main(context):
     try:
         # Recupera el documento especificado
         document = database.get_document('661c0ff748205b5d00b5', '661c1000c15d1c28d50a', document_id)
-        response_data = document['respuesta']
+        response_data = json.loads(document['respuesta']) if isinstance(document['respuesta'], str) else document['respuesta']
 
         # Preparar datos para renderizar en la plantilla HTML
         basic_info = {key: response_data[key] for key in ['rut', 'email', 'monto', 'plazo', 'Lista Negra', 'Lista Blanca', 'estado_credito', 'total_deudas', 'score_credito']}
