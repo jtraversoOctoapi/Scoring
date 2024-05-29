@@ -13,7 +13,7 @@ html_template = '''
          }
          
         document.addEventListener('DOMContentLoaded', function () {
-            function openModal(response) {
+            function openModal(response, documentId) {
                 document.getElementById('responseText').value = JSON.stringify(response, null, 2);  // Asegurándose de formatear bien el JSON;
                 document.getElementById('modal').style.display = 'flex';
 
