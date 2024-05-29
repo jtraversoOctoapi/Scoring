@@ -17,8 +17,8 @@ def main(context):
         return context.res.json({'message': 'Invalid request method, POST required'}, 405)
 
     try:
-        body = context.req.body  # Directly using parsed JSON object
-        result = json.dumps(body.get('result'))  # Convert the result part to a JSON string if necessary
+        body = json.loads(context.req.body)
+        result = json.dumps(body)
         path_parts = context.req.path.split('/')
         
         if len(path_parts) == 3 and path_parts[1] == 'document_id':
