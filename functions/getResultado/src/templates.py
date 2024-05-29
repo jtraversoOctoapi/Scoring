@@ -1,8 +1,22 @@
-# templates.py
+from jinja2 import Environment, BaseLoader, select_autoescape
 
-from jinja2 import Template
+# Función para formatear números con separadores de miles
+def format_currency(value):
+    return f"{value:,.0f}".replace(',', '.')
 
-html_template = Template("""
+# Función para formatear decimales con dos lugares
+def format_decimal(value):
+    return f"{value:.2f}"
+
+# Crear un entorno de Jinja2 y agregar filtros
+env = Environment(
+    loader=BaseLoader(),
+    autoescape=select_autoescape()
+)
+env.filters['currency'] = format_currency
+env.filters['decimal'] = format_decimal
+
+html_template = env.from_string("""
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,12 +45,12 @@ html_template = Template("""
     <ul>
         <li>RUT: {{ basic_info['rut'] }}</li>
         <li>Email: {{ basic_info['email'] }}</li>
-        <li>Monto: {{ basic_info['monto'] }}</li>
+        <li>Monto: {{ basic_info['monto']|currency }}</li>
         <li>Plazo: {{ basic_info['plazo'] }}</li>
         <li>Lista Negra: {{ basic_info['Lista Negra'] }}</li>
         <li>Lista Blanca: {{ basic_info['Lista Blanca'] }}</li>
         <li>Estado Crédito: {{ basic_info['estado_credito'] }}</li>
-        <li>Total Deudas: {{ basic_info['total_deudas'] }}</li>
+        <li>Total Deudas: {{ basic_info['total_deudas']|currency }}</li>
         <li>Score Crédito: {{ basic_info['score_credito'] }}</li>
     </ul>
     <h2>Resultado del Pricing</h2>
@@ -62,11 +76,11 @@ html_template = Template("""
             <tr>
                 <td>{{ item['SCORING DESDE (>=)'] }}</td>
                 <td>{{ item['SCORING HASTA (<)'] }}</td>
-                <td>{{ item['MONTO DESDE (>=)'] }}</td>
-                <td>{{ item['MONTO HASTA (<)'] }}</td>
+                <td>{{ item['MONTO DESDE (>=)']|currency }}</td>
+                <td>{{ item['MONTO HASTA (<)']|currency }}</td>
                 <td>{{ item['PLAZO DESDE (DIAS >=)'] }}</td>
                 <td>{{ item['PLAZO HASTA (DIAS <)'] }}</td>
-                <td>{{ item['SPREAD (SOBRE TASA BASE)'] }}</td>
+                <td>{{ item['SPREAD (SOBRE TASA BASE)']|decimal }}</td>
                 <td>{{ item['% DE ADELANTO'] }}</td>
                 <td>{{ item['MONEDA'] }}</td>
                 <td>{{ item['CANAL'] }}</td>
