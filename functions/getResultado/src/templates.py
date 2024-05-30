@@ -2,11 +2,17 @@ from jinja2 import Environment, Template
 
 # Función para formatear números con separadores de miles
 def format_currency(value):
-    return "{:,.0f}".format(value).replace(",", ".")
+    try:
+        return "{:,.0f}".format(value).replace(",", ".")
+    except (TypeError, ValueError):
+        return "No disponible"
 
 # Función para redondear a dos decimales
 def format_percentage(value):
-    return "{:.2f}".format(value)
+    try:
+        return "{:.2f}".format(value)
+    except (TypeError, ValueError):
+        return "No disponible"
 
 # Crear un entorno Jinja2 y añadir los filtros
 env = Environment()
@@ -37,15 +43,15 @@ html_template = env.from_string("""
         <section>
             <h2>Información Básica</h2>
             <ul>
-                <li>RUT: {{ basic_info['rut'] }}</li>
-                <li>Email: {{ basic_info['email'] }}</li>
-                <li>Monto: {{ basic_info['monto']|currency }}</li>
-                <li>Plazo: {{ basic_info['plazo'] }}</li>
-                <li>Lista Negra: {{ basic_info['Lista Negra'] }}</li>
-                <li>Lista Blanca: {{ basic_info['Lista Blanca'] }}</li>
-                <li>Estado Crédito: {{ basic_info['estado_credito'] }}</li>
-                <li>Total Deudas: {{ basic_info['total_deudas']|currency }}</li>
-                <li>Score Crédito: {{ basic_info['score_credito'] }}</li>
+                <li>RUT: {{ basic_info['rut']|default('No disponible')  }}</li>
+                <li>Email: {{ basic_info['email']|default('No disponible')  }}</li>
+                <li>Monto: {{ basic_info['monto']|currency|default('No disponible')  }}</li>
+                <li>Plazo: {{ basic_info['plazo']|default('No disponible')  }}</li>
+                <li>Lista Negra: {{ basic_info['Lista Negra']|default('No disponible')  }}</li>
+                <li>Lista Blanca: {{ basic_info['Lista Blanca']|default('No disponible')  }}</li>
+                <li>Estado Crédito: {{ basic_info['estado_credito']|default('No disponible')  }}</li>
+                <li>Total Deudas: {{ basic_info['total_deudas']|currency|default('No disponible')  }}</li>
+                <li>Score Crédito: {{ basic_info['score_credito'|default('No disponible') ] }}</li>
             </ul>
         </section>
         <section>
