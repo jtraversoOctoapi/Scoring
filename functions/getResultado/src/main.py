@@ -31,7 +31,7 @@ def main(context):
 
         # Preparar datos para renderizar en la plantilla HTML
         basic_info = {key: response_data[key] for key in ['rut', 'email', 'monto', 'plazo', 'Lista Negra', 'Lista Blanca', 'estado_credito', 'total_deudas', 'score_credito']}
-        pricing_results = response_data['Resultado Pricing']
+        pricing_results = json.loads(response_data.get('Resultado Pricing', '[]'))
 
         # Renderizar la página HTML con los datos
         html_content = html_template.render(basic_info=basic_info, pricing_results=pricing_results)
