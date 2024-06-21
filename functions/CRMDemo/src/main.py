@@ -28,8 +28,8 @@ def main(req, res):
         # URL del webhook
         webhook_url = 'https://hook.us1.make.com/pfox96c7uh6tch6csu1vhtv8yl7h4qyb'
         
-        # Enviar el RUT al webhook de Make
-        response = requests.post(webhook_url, json={"rut": rut})
+        # Preparar el cliente HTTP y enviar el RUT al webhook de Make
+        response = req.client.post(webhook_url, json={"rut": rut})
         
         if response.status_code == 200:
             return res.json({'message': 'RUT enviado correctamente'})
