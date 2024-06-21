@@ -19,7 +19,7 @@ def main(context):
         </head>
         <body>
             <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-                <form action="" method="post">
+                <form action="" method="post" enctype="application/x-www-form-urlencoded">
                     <label for="rut">RUT SIN DV:</label>
                     <input type="text" id="rut" name="rut" required>
                     <button type="submit">Enviar</button>
@@ -28,12 +28,10 @@ def main(context):
         </body>
         </html>
         """
-        # Enviar respuesta HTML correctamente sin usar keyword arguments para status o headers
         return context.res.send(html_content, 200, {'content-type': 'text/html'})
 
-    elif context.req.method == 'POST':
-        # Decodifica los datos form-urlencoded
-        formData = parse_qs(context.req.payload)
+    elif context.req.method == 'POST' and 'application/x-www-form-urlencoded' in context.req.headers.get('content-type', '').lower():
+        formData = parse_qs(context.req.body)
         rut = formData.get('rut', [''])[0]
 
         # URL del webhook de Make
@@ -46,3 +44,5 @@ def main(context):
             return context.res.json({'message': 'RUT enviado correctamente'})
         else:
             return context.res.json({'error': 'Error al enviar el RUT'}, status_code=response.status_code)
+    else:
+        return context.res.json({'error': 'Invalid request type or content type'}, 400)
