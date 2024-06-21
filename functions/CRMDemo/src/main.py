@@ -1,6 +1,7 @@
 from appwrite.client import Client
 from appwrite.services.functions import Functions
 import requests
+from urllib.parse import parse_qs
 
 # Configuración inicial del cliente de Appwrite
 client = Client()
@@ -31,7 +32,9 @@ def main(context):
         return context.res.send(html_content, 200, {'content-type': 'text/html'})
 
     elif context.req.method == 'POST':
-        rut = context.req.payload['rut']
+        # Decodifica los datos form-urlencoded
+        formData = parse_qs(context.req.payload)
+        rut = formData.get('rut', [''])[0]
 
         # URL del webhook de Make
         webhook_url = 'https://hook.us1.make.com/pfox96c7uh6tch6csu1vhtv8yl7h4qyb'
