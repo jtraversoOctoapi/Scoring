@@ -27,8 +27,8 @@ def main(context):
         </body>
         </html>
         """
-        # Usar .send para enviar contenido HTML, especificando el tipo de contenido adecuadamente
-        return context.res.send(html_content, status_code=200, headers={'content-type': 'text/html'})
+        # Enviar respuesta HTML correctamente sin usar keyword arguments para status o headers
+        return context.res.send(html_content, 200, {'content-type': 'text/html'})
 
     elif context.req.method == 'POST':
         rut = context.req.payload['rut']
